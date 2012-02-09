@@ -1,10 +1,13 @@
 package com.saucelabs.saucerest;
 
-import java.io.*;
-import java.net.*;
-import java.util.*;
-import org.json.simple.*;
-import sun.misc.BASE64Encoder;
+import org.json.simple.JSONValue;
+import org.apache.commons.codec.binary.Base64;
+
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 
 
@@ -34,8 +37,7 @@ public class SauceREST {
     public void updateJobInfo(String jobId, Map<String,Object> updates) throws IOException {
         URL restEndpoint = new URL(RESTURL+"/v1/"+username+"/jobs/"+jobId);
         String auth = username + ":" + accessKey;
-        BASE64Encoder encoder = new BASE64Encoder();
-        auth = "Basic " + new String(encoder.encode(auth.getBytes()));
+        auth = "Basic " + new String(Base64.encodeBase64(auth.getBytes()));
         
         HttpURLConnection postBack = (HttpURLConnection) restEndpoint.openConnection();
         postBack.setDoOutput(true);
